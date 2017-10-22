@@ -55,7 +55,7 @@ a.no-border { border-bottom: none }
 }
 
 .full-height {
-    height: calc(100vh - 5rem);
+    height: calc(100vh - 6rem);
 }
 
 .link-big {

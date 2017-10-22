@@ -22,7 +22,8 @@
     <div id="image-modal" v-bind:class="{'active': !!currentImage}">
       <div v-if="!!currentImage">
         <div v-on:click="previousImage" class="image-ctrl image-ctrl-prev">
-          <i class="fa fa-chevron-left"></i>
+          <!--<i class="fa fa-chevron-left"></i>-->
+          <strong style="font-size: 4rem">&lt;</strong>
         </div>
         <div v-if="!!currentImage">
           <h3 v-if="currentImage.title">{{currentImage.title}}</h3>
@@ -30,10 +31,12 @@
                v-on:click="hideImage" alt="">
         </div>
         <div v-on:click="nextImage" class="image-ctrl image-ctrl-next">
-          <i class="fa fa-chevron-right"></i>
+          <!--<i class="fa fa-chevron-right"></i>-->
+          <strong style="font-size: 4rem">&gt;</strong>
         </div>
         <div v-on:click="hideImage" class="image-ctrl image-ctrl-close">
-          <i class="fa fa-close"></i>
+          <!--<i class="fa fa-close"></i>-->
+          <strong style="font-size: 4rem">&times;</strong>
         </div>
         <div v-if="currentImage.description" class="image-description">
           <p>

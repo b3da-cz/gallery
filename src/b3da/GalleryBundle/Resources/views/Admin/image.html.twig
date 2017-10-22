@@ -1,7 +1,9 @@
 {% extends '@b3daGallery/layoutAdmin.html.twig' %}
 
 {% block body %}
-    <a href="{{ path('b3gallery.admin.gallery', {id: galleryId}) }}" class="link-big"><< back</a>
+    <div class="margin-bottom">
+        <a href="{{ path('b3gallery.admin.gallery', {id: galleryId}) }}" class="link-big"><< back</a>
+    </div>
     <div class="flex-row">
         <div>
             {{ form(form, {attr: {class: 'pure-form pure-form-stacked'}}) }}

@@ -65,7 +65,7 @@ div#image-modal div.image-description {
     bottom: 0;
     left: 0;
     right: 0;
-    opacity: 0.2;
+    opacity: 0.35;
     transition: opacity 300ms linear;
     background-color: #222;
     z-index: 12;
