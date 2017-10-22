@@ -4,6 +4,7 @@ namespace b3da\GalleryBundle\Controller;
 
 use b3da\GalleryBundle\Entity\Gallery;
 use b3da\GalleryBundle\Entity\Image;
+use b3da\GalleryBundle\Entity\Visit;
 use b3da\GalleryBundle\Form\Type\GalleryType;
 use b3da\GalleryBundle\Form\Type\ImageType;
 use b3da\GalleryBundle\Form\Type\PasswordFormType;
@@ -23,6 +24,8 @@ class AdminController extends Controller
     public function indexAction()
     {
         $galleries = $this->getDoctrine()->getRepository(Gallery::class)->findBy([],['position' => 'ASC']);
+        $allVisits = $this->getDoctrine()->getRepository(Visit::class)->findAll();
+        $countAllVisits = count($allVisits);
         $countGalleriesPublic = 0;
         $countGalleriesLocked = 0;
         $countGalleriesPrivate = 0;
@@ -38,6 +41,7 @@ class AdminController extends Controller
         }
         return $this->render('b3daGalleryBundle:Admin:index.html.twig', [
             'galleries' => $galleries,
+            'countAllVisits' => $countAllVisits,
             'countGalleriesPublic' => $countGalleriesPublic,
             'countGalleriesPrivate' => $countGalleriesPrivate,
             'countGalleriesLocked' => $countGalleriesLocked,

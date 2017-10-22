@@ -30,6 +30,7 @@
               </div>
               <div class="list-image-ctrl-container">
                   <div class="list-image-ctrl-row">{{ image }}</div>
+                  <div class="list-image-ctrl-row">{{ image.visitCount ~ ' visits' }}</div>
                   <div class="list-image-ctrl-row">
                       <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}">detail &gt;&gt;</a>
                   </div>
@@ -46,6 +47,8 @@
               </div>
               {% if image.mainColor is not null %}
                   <div class="main-color-stripe" style="background-color: {{ image.mainColor }}"></div>
+              {% else %}
+                  <div class="main-color-stripe" style="background-color: #dfdfdf"></div>
               {% endif %}
           </div>
       {% endfor %}

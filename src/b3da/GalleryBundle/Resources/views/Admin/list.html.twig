@@ -27,11 +27,16 @@
                   <div class="list-image-ctrl-row">
                       <h2 class="gallery-subheading-date">{{ (gallery.images | length) ~ ' images' }}</h2>
                   </div>
-                  {% if gallery.isPublic == 0 %}
                   <div class="list-image-ctrl-row">
-                      <h2 class="gallery-subheading-date">&lfloor;&times;&rceil; not public</h2>
+                      <h2 class="gallery-subheading-date">{{ gallery.visitCount ~ ' visits' }}</h2>
                   </div>
+                  <div class="list-image-ctrl-row">
+                  {% if gallery.isPublic == 0 %}
+                      <h2 class="gallery-subheading-date">&lfloor;&times;&rceil; not public</h2>
+                  {% else %}
+                      <h2 class="gallery-subheading-date">&nbsp;</h2>
                   {% endif %}
+                  </div>
                   {% if gallery.password > '' %}
                   <div class="list-image-ctrl-row">
                       <h2 class="gallery-subheading-date">&lfloor;&otimes;&rceil; locked</h2>

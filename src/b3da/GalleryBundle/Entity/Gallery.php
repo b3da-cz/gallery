@@ -396,4 +396,14 @@ class Gallery
     {
         return $this->visits;
     }
+
+    /**
+     * Get visitCount
+     *
+     * @return integer
+     */
+    public function getVisitCount()
+    {
+        return count($this->visits);
+    }
 }
