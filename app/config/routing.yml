@@ -1,0 +1,8 @@
+b3da_gallery:
+    resource: "@b3daGalleryBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+oneup_uploader:
+    resource: .
+    type: uploader

@@ -1,0 +1,131 @@
+@import "common.css";
+
+.gallery-heading {
+    margin: 0 0 0 1rem;
+    font-size: 2rem;
+}
+
+section.gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+section.gallery-container::after {
+    content: '';
+    flex-grow: 999999999;
+}
+div.thumb-container {
+    margin: 3px;
+    /*background-color: rgba(193, 193, 193, 0.65);*/
+    position: relative;
+    -webkit-transition: 300ms -webkit-filter linear;
+    transition: 300ms filter linear, 300ms -webkit-filter linear;
+    cursor: pointer;
+}
+div.thumb-container:hover img.thumb {
+    -webkit-filter: brightness(123%);
+    filter: brightness(123%);
+    /*-webkit-filter: grayscale(1%) hue-rotate(7deg) saturate(2);*/
+    /*filter: grayscale(1%) hue-rotate(7deg) saturate(2);*/
+}
+i.thumb-background {
+    display: block;
+}
+img.thumb {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    vertical-align: bottom;
+}
+div#image-modal {
+    opacity: 0;
+    transition: opacity 300ms linear;
+}
+div#image-modal.active {
+    display: flex;
+    opacity: 1;
+    background-color: #000;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+div#image-modal h3 {
+    position: fixed;
+    top: 1rem;
+    left: 0;
+    right: 0;
+    opacity: 0.7;
+    text-align: center;
+    z-index: 11;
+}
+div#image-modal div.image-description {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.2;
+    transition: opacity 300ms linear;
+    background-color: #222;
+    z-index: 12;
+}
+div#image-modal div.image-description:hover {
+    opacity: 0.7;
+}
+div#image-modal div.image-description p {
+    text-align: justify;
+    padding: 0.5rem;
+}
+div#image-modal img {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
+    z-index: 10;
+    cursor: pointer;
+}
+div.image-ctrl {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #c1c1c1;*/
+    opacity: 0.1;
+    transition: opacity 300ms linear;
+    width: 20vw;
+    height: 100%;
+    top: 0;
+    z-index: 11;
+    cursor: pointer;
+}
+div.image-ctrl i.fa {
+    font-size: 5rem;
+    color: #fff;
+}
+div.image-ctrl-prev {
+    left: 0;
+}
+div.image-ctrl-next {
+    right: 0;
+}
+div.image-ctrl-close {
+    justify-content: flex-end;
+    padding-right: 1rem;
+    height: 5vh;
+    width: calc(20vw - 1rem);
+    right: 0;
+    opacity: 0.4;
+    z-index: 12;
+}
+div.image-ctrl-close i.fa {
+    font-size: 3rem;
+}
+div.image-ctrl:hover {
+    opacity: 0.7;
+}

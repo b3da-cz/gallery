@@ -1,0 +1,88 @@
+{% extends '@b3daGallery/layout.html.twig' %}
+
+{% block title %}Gallery {{ gallery.title > '' ? gallery.title : (gallery.dateCreated | date('d.m.Y H:i')) }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('bundles/b3dagallery/css/pure/buttons.css') }}">
+  <link rel="stylesheet" href="{{ asset('bundles/b3dagallery/css/pure/forms.css') }}">
+{% endblock %}
+
+{% block body %}
+  <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="link-big"><< back</a>
+  <h2>{{ gallery.title > '' ? gallery.title : (gallery.dateCreated | date('d.m.Y H:i')) }}</h2>
+  {% include 'b3daGalleryBundle:Admin:gallery.html.vue' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+      var images = {{ render(controller('b3daGalleryBundle:Front:galleryJson', {id: gallery.id})) }};
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          thumbScale: Number('{{ gallery.thumbScale }}') || 1,
+          thumbMargin: Number('{{ gallery.thumbMargin }}') || 2,
+          currentImage: null,
+          imgs: images,
+        },
+        created: function () {
+          window.addEventListener('keyup', this.keyPressed)
+        },
+        methods: {
+          getThumbStyle: function (img) {
+            const width = img.width * this.thumbScale * 200 / img.height;
+            return {
+              'margin': this.thumbMargin + 'px',
+              'width': width + 'px',
+              'flex-grow': width,
+              'background-color': img.mainColor
+            }
+          },
+          showImage: function (event, img) {
+            this.currentImage = img;
+          },
+          hideImage: function () {
+            this.currentImage = null;
+          },
+          previousImage: function () {
+            const currentIndex = this.imgs.indexOf(this.currentImage);
+            if (currentIndex > 0) {
+              this.showImage(null, this.imgs[currentIndex - 1]);
+            } else {
+              this.hideImage();
+            }
+          },
+          nextImage: function () {
+            const currentIndex = this.imgs.indexOf(this.currentImage);
+            if (this.imgs.length > currentIndex) {
+              this.showImage(null, this.imgs[currentIndex + 1]);
+            } else {
+              this.hideImage();
+            }
+          },
+          keyPressed: function (event) {
+            switch (event.keyCode) {
+              case 37:
+                this.previousImage();
+                break;
+              case 39:
+                this.nextImage();
+                break;
+              case 27:
+                this.hideImage();
+                break;
+            }
+//            console.warn(event); // TODO: remove
+          },
+          confirm: function (e) {
+            e.preventDefault();
+            window.location.href = '{{ path('b3gallery.admin.gallery_thumb_setting', {galleryId: gallery.id, scale: 'SCALE', margin: 'MARGIN'}) }}'
+              .replace('SCALE', this.thumbScale)
+              .replace('MARGIN', this.thumbMargin);
+          }
+        }
+      });
+    </script>
+{% endblock %}

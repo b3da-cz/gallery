@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&subset=latin-ext');
+* {
+    font-family: 'Roboto Mono', monospace, Courier !important;
+    /*outline: 1px dotted red;*/
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 1rem 3rem;
+}
+
+a { text-decoration: none; border-bottom: 0.3rem solid #333; color: #333; transition: all 300ms }
+a:visited { border-bottom: 0.3rem solid #dfdfdf }
+a:hover { border-bottom: 0.3rem solid #ff8800; color: #000 }
+a.no-border { border-bottom: none }
+
+.text-bigger { font-size: 1.6em }
+
+.margin { margin: 1rem }
+.margin-vertical { margin-top: 1rem; margin-bottom: 1rem }
+.margin-horizontal { margin-left: 1rem; margin-right: 1rem }
+.margin-left { margin-left: 1rem }
+.margin-right { margin-right: 1rem }
+.margin-top { margin-top: 1rem }
+.margin-bottom { margin-bottom: 1rem }
+
+.padding { padding: 1rem }
+.padding-vertical { padding-top: 1rem; padding-bottom: 1rem }
+.padding-horizontal { padding-left: 1rem; padding-right: 1rem }
+.padding-left { padding-left: 1rem }
+.padding-right { padding-right: 1rem }
+.padding-top { padding-top: 1rem }
+.padding-bottom { padding-bottom: 1rem }
+
+.color-secondary { color: #979B9E }
+.color-primary { color: #ff8800 }
+
+
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.link-big {
+    font-size: 1.8rem;
+    margin-right: 1rem;
+    color: #333;
+}
+
+.gallery-list-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.gallery-tab-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    /*align-items: center;*/
+    justify-content: space-between;
+    height: 30vh;
+    margin-bottom: 1rem;
+}
+.gallery-tab-container:hover {
+    box-shadow: 0 0 1rem #e3e3e3;
+}
+.gallery-tab-container:hover img {
+    -webkit-filter: brightness(123%);
+    filter: brightness(123%);
+}
+.gallery-image-thumb-container {
+    width: 30%;
+    max-width: 30%;
+    margin: 0.5rem;
+}
+img.gallery-image-thumb {
+    height: 100%;
+    width: auto;
+    background-color: #e3e3e3;
+}
+.gallery-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 40%;
+}
+.gallery-title-container a {
+    /*color: #333;*/
+    font-size: 2rem;
+}
+.gallery-subheading-date {
+    font-size: 1.1rem;
+    font-weight: 100;
+    margin: 0 1rem;
+}
+
+@media only screen and (min-width: 1240px) {
+    .gallery-tab-container {
+        width: 50%;
+    }
+}

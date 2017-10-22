@@ -1,0 +1,28 @@
+{% extends '@b3daGallery/layoutAdmin.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('b3gallery.admin.gallery', {id: galleryId}) }}" class="link-big"><< back</a>
+    <div class="flex-row">
+        <div>
+            {{ form(form, {attr: {class: 'pure-form pure-form-stacked'}}) }}
+            <div>
+                {% if image.mainColor is not null %}
+                <div class="image-main-color margin-vertical" style="background-color: {{ image.mainColor }}">
+                    Dominant color: {{ image.mainColor }}
+                </div>
+                {% endif %}
+                <br>
+                <a href="{{ path('b3gallery.admin.image_resize', {galleryId: galleryId, imageId: image.id}) }}">resize</a>
+                <br>
+                <a href="{{ path('b3gallery.admin.image_delete', {galleryId: galleryId, imageId: image.id}) }}">delete</a>
+            </div>
+        </div>
+        <div>
+        {% if image is defined and image.filename is not null %}
+            <div class="image-container">
+                <img src="{{ gallery_directory ~ '/' ~ galleryId ~ '/1920/' ~ image.fileName }}" alt="{{ image.title }}">
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

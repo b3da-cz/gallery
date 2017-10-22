@@ -1,0 +1,78 @@
+{% extends '@b3daGallery/layoutAdmin.html.twig' %}
+
+{% block body %}
+    <div class="margin-bottom">
+        <a href="{{ path('b3gallery.admin.list') }}" class="link-big"><< back</a>
+        {% if gallery is defined and gallery.id > 0 %}
+            <a href="{{ path('b3gallery.admin.gallery_preview', {id: gallery.id}) }}" class="link-big">preview >></a>
+        {% endif %}
+    </div>
+    <div class="flex-row">
+        <div>
+            {{ form(form, {attr: {class: 'pure-form pure-form-stacked'}}) }}
+        </div>
+        <div class="dropzone-container">
+        {% if gallery is defined and gallery.id > 0 %}
+            <div id="dropzone" class="dropzone"></div>
+        {% endif %}
+        </div>
+    </div>
+  {% if gallery is defined and gallery.images is not empty %}
+      <h3>Images</h3>
+      {% for image in gallery.images %}
+          <div class="list-image-container">
+              <div class="list-image-thumb-container">
+                  <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}" class="no-border">
+                      <img src="{{ gallery_directory ~ '/' ~ gallery.id ~ '/640/' ~ image.fileName }}" alt="{{ image.title }}" class="list-image-thumb">
+                  </a>
+              </div>
+              <div class="list-image-ctrl-container">
+                  <div class="list-image-ctrl-row">{{ image }}</div>
+                  <div class="list-image-ctrl-row">
+                      <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}">detail >></a>
+                  </div>
+                  <div class="list-image-ctrl-row">
+                      {% if gallery.frontImage is not null and image.id == gallery.frontImage.id %}
+                          <strong>>> is set as front <<</strong>
+                      {% else %}
+                          <a href="{{ path('b3gallery.admin.gallery_frontimage', {galleryId: gallery.id, imageId: image.id}) }}">set as front >></a>
+                      {% endif %}
+                  </div>
+                  <div class="list-image-ctrl-row">
+                      <a href="{{ path('b3gallery.admin.image_delete', {galleryId: gallery.id, imageId: image.id}) }}">delete &times;</a>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+  {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if gallery is defined and gallery.id > 0 %}
+    <script>
+      Dropzone.autoDiscover = false;
+      const dz = new Dropzone("div#dropzone", {
+        url: '{{ oneup_uploader_endpoint('gallery') }}?galleryId={{ gallery.id }}',
+        dictDefaultMessage: 'Drop multiple images (jpg|png|gif) here',
+      });
+      const filesToUpload = [];
+      const filesUploaded = [];
+      let uploadProgress = 0;
+      dz.on('addedfile', (file) => {
+        filesToUpload.push(file);
+      });
+      dz.on('complete', (file) => {
+        filesUploaded.push(file);
+//        console.warn('to upload: ' + filesToUpload.length + ', uploaded: ' + filesUploaded.length); // TODO: remove
+//        dz.removeFile(file);
+        if (filesToUpload.length === filesUploaded.length) {
+            window.location.href = window.location.href;
+        }
+      });
+      dz.on('totaluploadprogress', percentage => {
+        uploadProgress = percentage;
+      })
+    </script>
+    {% endif %}
+{% endblock %}

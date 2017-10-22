@@ -1,0 +1,82 @@
+{% extends '@b3daGallery/layout.html.twig' %}
+
+{% set galleryDateCreated = (gallery.dateCreated | date('d.m.Y H:i')) %}
+{% block title %}Gallery {{ gallery.title > '' ? gallery.title : galleryDateCreated }}{% endblock %}
+{% block body %}
+  <div class="flex-row">
+    <div>
+      <h2 class="gallery-heading">{{ gallery.title > '' ? gallery.title : galleryDateCreated }}</h2>
+      <h2 class="gallery-subheading-date">{{ galleryDateCreated }}</h2>
+    </div>
+    <div class="padding-top">
+      <a href="{{ path('b3gallery.front.index') }}" class="link-big"><< back</a>
+    </div>
+  </div>
+  {% include 'b3daGalleryBundle:Front:gallery.html.vue' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+      var images = {{ render(controller('b3daGalleryBundle:Front:galleryJson', {id: gallery.id})) }};
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          thumbScale: Number('{{ gallery.thumbScale }}') || 1,
+          thumbMargin: Number('{{ gallery.thumbMargin }}') || 2,
+          currentImage: null,
+          imgs: images,
+        },
+        created: function () {
+          window.addEventListener('keyup', this.keyPressed)
+        },
+        methods: {
+          getThumbStyle: function (img) {
+            const width = img.width * this.thumbScale * 200 / img.height;
+            return {
+              'margin': this.thumbMargin + 'px',
+              'width': width + 'px',
+              'flex-grow': width,
+              'background-color': img.mainColor
+            }
+          },
+          showImage: function (event, img) {
+            this.currentImage = img;
+          },
+          hideImage: function () {
+            this.currentImage = null;
+          },
+          previousImage: function () {
+            const currentIndex = this.imgs.indexOf(this.currentImage);
+            if (currentIndex > 0) {
+              this.showImage(null, this.imgs[currentIndex - 1]);
+            } else {
+              this.hideImage();
+            }
+          },
+          nextImage: function () {
+            const currentIndex = this.imgs.indexOf(this.currentImage);
+            if (this.imgs.length > currentIndex) {
+              this.showImage(null, this.imgs[currentIndex + 1]);
+            } else {
+              this.hideImage();
+            }
+          },
+          keyPressed: function (event) {
+            switch (event.keyCode) {
+              case 37:
+                this.previousImage();
+                break;
+              case 39:
+                this.nextImage();
+                break;
+              case 27:
+                this.hideImage();
+                break;
+            }
+          }
+        }
+      });
+    </script>
+{% endblock %}

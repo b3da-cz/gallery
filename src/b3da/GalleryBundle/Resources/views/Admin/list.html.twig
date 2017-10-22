@@ -1,0 +1,36 @@
+{% extends '@b3daGallery/layoutAdmin.html.twig' %}
+
+{% block body %}
+    <div class="margin-bottom">
+        <a href="{{ path('b3gallery.admin.gallery') }}" class="link-big">Create New</a>
+    </div>
+  {% if galleries is defined and galleries is not empty %}
+      {% for gallery in galleries %}
+          <div class="list-image-container">
+              <div class="list-image-thumb-container">
+                  {% if gallery.frontImage is not null and gallery.frontImage.filename is not null %}
+                      <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="no-border">
+                          <img src="{{ gallery_directory ~ '/' ~ gallery.id ~ '/640/' ~ gallery.frontImage.fileName }}" alt="{{ gallery.frontImage.title }}" class="list-image-thumb">
+                      </a>
+                  {% endif %}
+              </div>
+              <div class="list-image-ctrl-container">
+                  <div class="list-image-ctrl-row">
+                      <div class="gallery-title">
+                          <h2><a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}">{{ gallery.title }}</a></h2>
+                      </div>
+                  </div>
+                  {#<div class="list-image-ctrl-row">#}
+                      {#<a href="{{ path('b3gallery.admin.image_delete', {galleryId: gallery.id, imageId: image.id}) }}">delete</a>#}
+                  {#</div>#}
+              </div>
+          </div>
+      {% endfor %}
+  {% else %}
+      <h2>there are no galleries</h2>
+  {% endif %}
+{% endblock %}
+
+{#{% block javascripts %}#}
+    {#{{ parent() }}#}
+{#{% endblock %}#}
