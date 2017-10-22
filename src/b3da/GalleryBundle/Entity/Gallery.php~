@@ -70,16 +70,23 @@ class Gallery
     protected $images;
 
     /**
+     * @ORM\OneToMany(targetEntity="Visit", mappedBy="gallery")
+     */
+    private $visits;
+
+    /**
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist"})
      * @ORM\JoinColumn(name="front_image_id", referencedColumnName="id")
      */
     protected $frontImage;
 
-    public function __construct() 
+
+    public function __construct()
     {
         $this->thumbScale = 1.3;
         $this->thumbMargin = 4;
         $this->images = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
 
     /**
@@ -234,6 +241,30 @@ class Gallery
     public function getIsPublic()
     {
         return $this->isPublic;
+    }
+
+    /**
+     * Set plainPassword
+     *
+     * @param string $plainPassword
+     *
+     * @return Gallery
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get plainPassword
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 
     /**

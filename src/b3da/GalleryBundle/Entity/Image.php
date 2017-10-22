@@ -2,6 +2,7 @@
 
 namespace b3da\GalleryBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,11 +58,15 @@ class Image
      */
     protected $mainColor;
 
-//    /**
-//     * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"})
-//     * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
-//     */
-//    protected $media;
+    /**
+     * @ORM\OneToMany(targetEntity="Visit", mappedBy="image")
+     */
+    private $visits;
+
+
+    public function __construct() {
+        $this->visits = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -268,5 +273,41 @@ class Image
     public function getMainColor()
     {
         return $this->mainColor;
+    }
+
+    /**
+     * Add visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     *
+     * @return Image
+     */
+    public function addVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setImage($this);
+        $this->visits[] = $visit;
+
+        return $this;
+    }
+
+    /**
+     * Remove visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     */
+    public function removeVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setImage(null);
+        $this->visits->removeElement($visit);
+    }
+
+    /**
+     * Get visits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
     }
 }

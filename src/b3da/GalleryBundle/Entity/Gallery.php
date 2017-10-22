@@ -70,16 +70,23 @@ class Gallery
     protected $images;
 
     /**
+     * @ORM\OneToMany(targetEntity="Visit", mappedBy="gallery")
+     */
+    private $visits;
+
+    /**
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist"})
      * @ORM\JoinColumn(name="front_image_id", referencedColumnName="id")
      */
     protected $frontImage;
 
-    public function __construct() 
+
+    public function __construct()
     {
         $this->thumbScale = 1.3;
         $this->thumbMargin = 4;
         $this->images = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
 
     /**
@@ -352,5 +359,41 @@ class Gallery
     public function getFrontImage()
     {
         return $this->frontImage;
+    }
+
+    /**
+     * Add visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     *
+     * @return Gallery
+     */
+    public function addVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setGallery($this);
+        $this->visits[] = $visit;
+
+        return $this;
+    }
+
+    /**
+     * Remove visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     */
+    public function removeVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setGallery(null);
+        $this->visits->removeElement($visit);
+    }
+
+    /**
+     * Get visits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
     }
 }
