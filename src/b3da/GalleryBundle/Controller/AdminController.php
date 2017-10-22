@@ -6,6 +6,7 @@ use b3da\GalleryBundle\Entity\Gallery;
 use b3da\GalleryBundle\Entity\Image;
 use b3da\GalleryBundle\Form\Type\GalleryType;
 use b3da\GalleryBundle\Form\Type\ImageType;
+use b3da\GalleryBundle\Form\Type\PasswordFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,26 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('b3daGalleryBundle:Admin:index.html.twig');
+        $galleries = $this->getDoctrine()->getRepository(Gallery::class)->findBy([],['position' => 'ASC']);
+        $countGalleriesPublic = 0;
+        $countGalleriesLocked = 0;
+        $countGalleriesPrivate = 0;
+        foreach ($galleries as $gallery) {
+            if ($gallery->getIsPublic()) {
+                $countGalleriesPublic++;
+            } else {
+                $countGalleriesPrivate++;
+            }
+            if ($gallery->getPassword() > '') {
+                $countGalleriesLocked++;
+            }
+        }
+        return $this->render('b3daGalleryBundle:Admin:index.html.twig', [
+            'galleries' => $galleries,
+            'countGalleriesPublic' => $countGalleriesPublic,
+            'countGalleriesPrivate' => $countGalleriesPrivate,
+            'countGalleriesLocked' => $countGalleriesLocked,
+        ]);
     }
 
     /**
@@ -47,8 +67,9 @@ class AdminController extends Controller
         $form = $this->createForm(GalleryType::class, $gallery);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $gallery->setDateCreated(new \DateTime());
-
+            if (!$gallery->getId()) {
+                $gallery->setDateCreated(new \DateTime());
+            }
             $allGalleries = $this->getDoctrine()->getRepository(Gallery::class)->findAll();
             if(count($allGalleries) > 0) {
                 $gallery->setPosition($allGalleries[count($allGalleries) - 1]->getPosition() + 10);
@@ -58,7 +79,9 @@ class AdminController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             try {
-                $em->persist($gallery);
+                if (!$gallery->getId()) {
+                    $em->persist($gallery);
+                }
                 $em->flush();
                 return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $gallery->getId()]);
             } catch (\Exception $e) {
@@ -66,6 +89,46 @@ class AdminController extends Controller
             }
         }
         return $this->render('b3daGalleryBundle:Admin:gallery.html.twig', [
+            'gallery' => $gallery,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/gallery/{id}/lock", name="b3gallery.admin.gallery_lock")
+     */
+    public function galleryLockAction(Request $request, $id)
+    {
+        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
+        $form = $this->createForm(PasswordFormType::class, []);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $flushNeeded = false;
+            $plainPass = $form->getData()['password'];
+            if ($gallery->getPassword() > '' && !$plainPass) {
+                $gallery->setPassword(null);
+                $flushNeeded = true;
+            }
+            if ($plainPass > '') {
+                // todo: bCrypt is better option here, maybe create PasswordEncoder service?
+                $hash = hash('sha256', $this->getParameter('gallery_password_salt') . $plainPass);
+                $gallery->setPassword($hash);
+                $flushNeeded = true;
+            }
+
+            if ($flushNeeded) {
+                $em = $this->getDoctrine()->getManager();
+                try {
+                    $em->flush();
+                    return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $gallery->getId()]);
+                } catch (\Exception $e) {
+                    exit(dump($e));
+                }
+            } else {
+                return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $gallery->getId()]);
+            }
+        }
+        return $this->render('b3daGalleryBundle:Admin:galleryLock.html.twig', [
             'gallery' => $gallery,
             'form' => $form->createView(),
         ]);

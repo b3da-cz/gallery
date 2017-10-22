@@ -1,0 +1,20 @@
+{% extends '@b3daGallery/layoutAdmin.html.twig' %}
+
+{% block body %}
+    <div class="margin-bottom">
+        {% if gallery is defined and gallery.id > 0 %}
+            <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="link-big">&lt;&lt; back</a>
+        {% endif %}
+    </div>
+    <div class="flex-row">
+        <div>
+        {% if gallery.password > '' %}
+            <h2>Password <strong>IS SET</strong>!</h2>
+            <p>Clear password by sending empty form, or change it</p>
+        {% else %}
+            <p>Password is not set</p>
+        {% endif %}
+        {{ form(form, {attr: {class: 'pure-form pure-form-stacked'}}) }}
+        </div>
+    </div>
+{% endblock %}

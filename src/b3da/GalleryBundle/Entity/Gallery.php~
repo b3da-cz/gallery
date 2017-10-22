@@ -49,6 +49,16 @@ class Gallery
     protected $isPublic;
 
     /**
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $password;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Image", cascade={"persist"})
      * @ORM\JoinTable(
      *      name="gallery_image",
@@ -200,6 +210,54 @@ class Gallery
     public function getThumbMargin()
     {
         return $this->thumbMargin;
+    }
+
+    /**
+     * Set isPublic
+     *
+     * @param boolean $isPublic
+     *
+     * @return Gallery
+     */
+    public function setIsPublic($isPublic)
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    /**
+     * Get isPublic
+     *
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Gallery
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     /**

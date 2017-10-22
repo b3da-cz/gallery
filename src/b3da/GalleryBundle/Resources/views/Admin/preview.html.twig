@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-  <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="link-big"><< back</a>
+  <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="link-big">&lt;&lt; back</a>
   <h2>{{ gallery.title > '' ? gallery.title : (gallery.dateCreated | date('d.m.Y H:i')) }}</h2>
   {% include 'b3daGalleryBundle:Admin:gallery.html.vue' %}
 {% endblock %}

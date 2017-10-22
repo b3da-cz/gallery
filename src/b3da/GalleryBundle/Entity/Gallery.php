@@ -49,6 +49,16 @@ class Gallery
     protected $isPublic;
 
     /**
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $password;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Image", cascade={"persist"})
      * @ORM\JoinTable(
      *      name="gallery_image",
@@ -224,6 +234,54 @@ class Gallery
     public function getIsPublic()
     {
         return $this->isPublic;
+    }
+
+    /**
+     * Set plainPassword
+     *
+     * @param string $plainPassword
+     *
+     * @return Gallery
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get plainPassword
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Gallery
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     /**

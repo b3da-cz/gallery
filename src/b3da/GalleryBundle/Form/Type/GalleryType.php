@@ -28,6 +28,7 @@ class GalleryType extends AbstractType
             ])
             ->add('position', NumberType::class, [
                 'label' => 'Position',
+                'required' => false,
             ])
             ->add('isPublic', CheckboxType::class, [
                 'label' => 'Is Public?',

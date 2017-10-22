@@ -1,12 +1,21 @@
 {% extends '@b3daGallery/layoutAdmin.html.twig' %}
 
 {% block body %}
-  {#<form action="{{ oneup_uploader_endpoint('gallery') }}?galleryId={{ gallery.id }}" class="dropzone" style="width:100%; height:33vh; border:4px dashed black">#}
-  {#</form>#}
+    <div class="gallery-list-container">
+        <div class="gallery-tab-container">
+            <div class="gallery-image-thumb-container">
+                <div class="flex-centered height-100">
+                    <div>
+                        <div class="text-bigger margin-bottom">&nbsp;&sum;&nbsp; all: {{ galleries | length }}</div>
+                        <div class="text-bigger margin-bottom">&nbsp;&lowast;&nbsp; public: {{ countGalleriesPublic }}</div>
+                        <div class="text-bigger margin-bottom">&lfloor;&otimes;&rceil; locked: {{ countGalleriesLocked }}</div>
+                        <div class="text-bigger margin-bottom">&lfloor;&times;&rceil; private: {{ countGalleriesPrivate }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-title-container">
+                <a href="{{ path('b3gallery.admin.list') }}">list &gt;&gt;</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
-{#{% block javascripts %}#}
-    {#{{ parent() }}#}
-  {#<script type="text/javascript" src="https://raw.github.com/enyo/dropzone/master/dist/dropzone.js"></script>#}
-  {#<script type="text/javascript" src="{{ asset('bundles/b3dagallery/js/dropzone.js') }}"></script>#}
-{#{% endblock %}#}

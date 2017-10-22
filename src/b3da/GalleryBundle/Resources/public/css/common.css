@@ -9,7 +9,7 @@ html, body {
 }
 
 main {
-    margin: 1rem 3rem;
+    margin: 1rem 1rem;
 }
 
 a { text-decoration: none; border-bottom: 0.3rem solid #333; color: #333; transition: all 300ms }
@@ -54,6 +54,9 @@ a.no-border { border-bottom: none }
     justify-content: center;
 }
 
+.height-100 {
+    height: 100%;
+}
 .full-height {
     height: calc(100vh - 6rem);
 }
@@ -77,6 +80,7 @@ a.no-border { border-bottom: none }
     justify-content: space-between;
     height: 30vh;
     margin-bottom: 1rem;
+    overflow: hidden;
 }
 .gallery-tab-container:hover {
     box-shadow: 0 0 1rem #e3e3e3;
@@ -86,9 +90,9 @@ a.no-border { border-bottom: none }
     filter: brightness(123%);
 }
 .gallery-image-thumb-container {
-    width: 30%;
-    max-width: 30%;
+    width: 60%;
     margin: 0.5rem;
+    overflow: hidden;
 }
 img.gallery-image-thumb {
     height: 100%;
@@ -114,6 +118,9 @@ img.gallery-image-thumb {
 }
 
 @media only screen and (min-width: 1240px) {
+    main {
+        margin: 1rem 3rem;
+    }
     .gallery-tab-container {
         width: 50%;
     }

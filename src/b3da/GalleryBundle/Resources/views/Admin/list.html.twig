@@ -6,20 +6,37 @@
     </div>
   {% if galleries is defined and galleries is not empty %}
       {% for gallery in galleries %}
-          <div class="list-image-container">
+          <div class="list-image-container bigger-image-container">
               <div class="list-image-thumb-container">
                   {% if gallery.frontImage is not null and gallery.frontImage.filename is not null %}
                       <a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}" class="no-border">
                           <img src="{{ gallery_directory ~ '/' ~ gallery.id ~ '/640/' ~ gallery.frontImage.fileName }}" alt="{{ gallery.frontImage.title }}" class="list-image-thumb">
                       </a>
                   {% endif %}
+                  <div class="main-color-stripe" style="background-color: rgba(200, 200, 200, 0.5); width: 0.5rem; margin-right: 0"></div>
               </div>
               <div class="list-image-ctrl-container">
                   <div class="list-image-ctrl-row">
-                      <div class="gallery-title">
+                      <div class="gallery-title margin-left">
                           <h2><a href="{{ path('b3gallery.admin.gallery', {id: gallery.id}) }}">{{ gallery.title }}</a></h2>
                       </div>
                   </div>
+                  <div class="list-image-ctrl-row">
+                      <h2 class="gallery-subheading-date">{{ gallery.dateCreated | date('d.m.Y H:i:s')  }}</h2>
+                  </div>
+                  <div class="list-image-ctrl-row">
+                      <h2 class="gallery-subheading-date">{{ (gallery.images | length) ~ ' images' }}</h2>
+                  </div>
+                  {% if gallery.isPublic == 0 %}
+                  <div class="list-image-ctrl-row">
+                      <h2 class="gallery-subheading-date">&lfloor;&times;&rceil; not public</h2>
+                  </div>
+                  {% endif %}
+                  {% if gallery.password > '' %}
+                  <div class="list-image-ctrl-row">
+                      <h2 class="gallery-subheading-date">&lfloor;&otimes;&rceil; locked</h2>
+                  </div>
+                  {% endif %}
                   {#<div class="list-image-ctrl-row">#}
                       {#<a href="{{ path('b3gallery.admin.image_delete', {galleryId: gallery.id, imageId: image.id}) }}">delete</a>#}
                   {#</div>#}

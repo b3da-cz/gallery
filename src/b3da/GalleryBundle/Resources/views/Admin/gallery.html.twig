@@ -2,9 +2,10 @@
 
 {% block body %}
     <div class="margin-bottom">
-        <a href="{{ path('b3gallery.admin.list') }}" class="link-big"><< back</a>
+        <a href="{{ path('b3gallery.admin.list') }}" class="link-big">&lt;&lt; back</a>
         {% if gallery is defined and gallery.id > 0 %}
-            <a href="{{ path('b3gallery.admin.gallery_preview', {id: gallery.id}) }}" class="link-big">preview >></a>
+            <a href="{{ path('b3gallery.admin.gallery_preview', {id: gallery.id}) }}" class="link-big">preview &gt;&gt;</a>
+            <a href="{{ path('b3gallery.admin.gallery_lock', {id: gallery.id}) }}" class="link-big">{% if gallery.password > '' %}&lt;&lt;<span style="color: #ff8800;">LOCKED</span>&gt;&gt;{% else %}&gt;lock&lt;{% endif %}</a>
         {% endif %}
     </div>
     <div class="flex-row">
@@ -25,23 +26,27 @@
                   <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}" class="no-border">
                       <img src="{{ gallery_directory ~ '/' ~ gallery.id ~ '/640/' ~ image.fileName }}" alt="{{ image.title }}" class="list-image-thumb">
                   </a>
+                  <div class="main-color-stripe" style="background-color: rgba(200, 200, 200, 0.5); width: 0.5rem"></div>
               </div>
               <div class="list-image-ctrl-container">
                   <div class="list-image-ctrl-row">{{ image }}</div>
                   <div class="list-image-ctrl-row">
-                      <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}">detail >></a>
+                      <a href="{{ path('b3gallery.admin.image_detail', {galleryId: gallery.id, imageId: image.id}) }}">detail &gt;&gt;</a>
                   </div>
                   <div class="list-image-ctrl-row">
                       {% if gallery.frontImage is not null and image.id == gallery.frontImage.id %}
-                          <strong>>> is set as front <<</strong>
+                          <strong>&gt;&gt; <span style="color: #ff8800;">is set as front</span> &lt;&lt;</strong>
                       {% else %}
-                          <a href="{{ path('b3gallery.admin.gallery_frontimage', {galleryId: gallery.id, imageId: image.id}) }}">set as front >></a>
+                          <a href="{{ path('b3gallery.admin.gallery_frontimage', {galleryId: gallery.id, imageId: image.id}) }}">set as front &gt;&gt;</a>
                       {% endif %}
                   </div>
                   <div class="list-image-ctrl-row">
                       <a href="{{ path('b3gallery.admin.image_delete', {galleryId: gallery.id, imageId: image.id}) }}">delete &times;</a>
                   </div>
               </div>
+              {% if image.mainColor is not null %}
+                  <div class="main-color-stripe" style="background-color: {{ image.mainColor }}"></div>
+              {% endif %}
           </div>
       {% endfor %}
   {% endif %}

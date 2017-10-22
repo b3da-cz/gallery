@@ -1,6 +1,7 @@
 {% extends '@b3daGallery/layout.html.twig' %}
 
 {% block body %}
+    <h1 class="margin-left">{{ gallery_main_heading }}</h1>
     {% if galleries is defined and galleries is not empty %}
         <div class="gallery-list-container">
             {% for gallery in galleries %}
@@ -14,7 +15,10 @@
                     </div>
                     <div class="gallery-title-container">
                         <a href="{{ path('b3gallery.front.gallery', {id: gallery.id}) }}">{{ gallery.title }}</a>
-                        <h2 class="gallery-subheading-date">{{ gallery.dateCreated | date('d.m.Y H:i') }}</h2>
+                        <div class="margin-vertical">
+                            <h2 class="gallery-subheading-date">{{ gallery.dateCreated | date('d.m.Y H:i') }}</h2>
+                        </div>
+                        {% if gallery.password > '' %}<h2 class="gallery-subheading-date">&lfloor;&otimes;&rceil; locked</h2>{% endif %}
                     </div>
                 </div>
             {% endfor %}

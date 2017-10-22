@@ -18,6 +18,9 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    gallery_main_heading: 'b3da photo gallery'
+    gallery_http_realm: 'changeThisOnlyONCE'
+    gallery_password_salt: 'change this to something only ONCE!'
     gallery_hostname: 'http://localhost/my/b3gallery'
     gallery_directory: '%kernel.project_dir%/web/uploads/gallery'
     twig_gallery_directory: '%gallery_hostname%/web/uploads/gallery'
