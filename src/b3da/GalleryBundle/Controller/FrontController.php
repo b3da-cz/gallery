@@ -6,6 +6,7 @@ use b3da\GalleryBundle\Entity\Gallery;
 use b3da\GalleryBundle\Entity\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -58,14 +59,37 @@ class FrontController extends Controller
             $result[] = [
                 'title' => $image->getTitle(),
                 'description' => $image->getDescription(),
-                'urlThumb' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/640/' . $image->getFilename(),
-                'url' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/1920/' . $image->getFilename(),
+                'urlThumb' => $this->generateUrl('b3gallery.front.image', [
+                    'galleryId' => $gallery->getId(),
+                    'imageId' => $image->getId(),
+                    'size' => '640',
+                ]),
+                'url' => $this->generateUrl('b3gallery.front.image', [
+                    'galleryId' => $gallery->getId(),
+                    'imageId' => $image->getId(),
+                    'size' => '1920',
+                ]),
+//                'urlThumb' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/640/' . $image->getFilename(),
+//                'url' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/1920/' . $image->getFilename(),
                 'width' => $image->getWidth(),
                 'height' => $image->getHeight(),
                 'mainColor' => $image->getMainColor() ? $image->getMainColor() : 'rgba(193, 193, 193, 0.65)',
             ];
         }
         return new JsonResponse($result);
+    }
+
+    /**
+     * @Route("/gallery/{galleryId}/image/{imageId}/{size}", name="b3gallery.front.image")
+     */
+    public function imageAction($galleryId, $imageId, $size)
+    {
+        // todo: serve images from this route, secure locked and private
+        $image = $this->getDoctrine()->getRepository(Image::class)->find($imageId);
+        if (!$image) {
+            return new JsonResponse(['error' => 'not found or denied'], 418);
+        }
+        return new BinaryFileResponse($this->getParameter('gallery_directory') . '/' . $galleryId . '/' . $size . '/' . $image->getFilename());
     }
 
     protected function unlockGallery($gallery) {
