@@ -35,20 +35,7 @@ class FrontController extends Controller
             return new JsonResponse(['error' => 'not found or denied'], 418);
         }
         if ($gallery->getPassword() > '') {
-            // todo: refactor && cleanup
-            if (!isset($_SERVER['PHP_AUTH_PW'])) {
-                header('WWW-Authenticate: Basic realm="b3gallery' . $id . $this->getParameter('gallery_http_realm') . '"');
-                header('HTTP/1.0 401 Unauthorized');
-                exit('{"error": "unauthorized"}');
-            } else {
-                // todo: bCrypt is better option here, maybe create PasswordEncoder service?
-                $hash = hash('sha256', $this->getParameter('gallery_password_salt') . $_SERVER['PHP_AUTH_PW']);
-                if ($gallery->getPassword() !== $hash) {
-                    header('WWW-Authenticate: Basic realm="b3gallery' . $id . $this->getParameter('gallery_http_realm') . '"');
-                    header('HTTP/1.0 401 Unauthorized');
-                    exit('{"error": "unauthorized"}');
-                }
-            }
+            $this->unlockGallery($gallery);
         }
         return $this->render('b3daGalleryBundle:Front:gallery.html.twig', ['gallery' => $gallery]);
     }
@@ -61,6 +48,9 @@ class FrontController extends Controller
         $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
         if (!$this->getUser() && (!$gallery || !$gallery->getIsPublic())) {
             return new JsonResponse(['error' => 'not found or denied'], 418);
+        }
+        if ($gallery->getPassword() > '') {
+            $this->unlockGallery($gallery);
         }
         $result = [];
         /** @var Image $image */
@@ -76,5 +66,22 @@ class FrontController extends Controller
             ];
         }
         return new JsonResponse($result);
+    }
+
+    protected function unlockGallery($gallery) {
+        // todo: refactor && cleanup
+        if (!isset($_SERVER['PHP_AUTH_PW'])) {
+            header('WWW-Authenticate: Basic realm="b3gallery' . $gallery->getId() . $this->getParameter('gallery_http_realm') . '"');
+            header('HTTP/1.0 401 Unauthorized');
+            exit('{"error": "unauthorized"}');
+        } else {
+            // todo: bCrypt is better option here, maybe create PasswordEncoder service?
+            $hash = hash('sha256', $this->getParameter('gallery_password_salt') . $_SERVER['PHP_AUTH_PW']);
+            if ($gallery->getPassword() !== $hash) {
+                header('WWW-Authenticate: Basic realm="b3gallery' . $gallery->getId() . $this->getParameter('gallery_http_realm') . '"');
+                header('HTTP/1.0 401 Unauthorized');
+                exit('{"error": "unauthorized"}');
+            }
+        }
     }
 }
