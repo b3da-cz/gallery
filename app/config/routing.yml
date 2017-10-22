@@ -6,3 +6,6 @@ b3da_gallery:
 oneup_uploader:
     resource: .
     type: uploader
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

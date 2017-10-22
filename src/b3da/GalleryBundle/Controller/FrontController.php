@@ -43,7 +43,7 @@ class FrontController extends Controller
     public function galleryJsonAction($id)
     {
         $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
-        if (!$gallery || !$gallery->getIsPublic()) {
+        if (!$this->getUser() && (!$gallery || !$gallery->getIsPublic())) {
             return new JsonResponse(['error' => 'not found or denied'], 418);
         }
         $result = [];
