@@ -73,12 +73,12 @@ class AdminController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$gallery->getId()) {
                 $gallery->setDateCreated(new \DateTime());
-            }
-            $allGalleries = $this->getDoctrine()->getRepository(Gallery::class)->findAll();
-            if(count($allGalleries) > 0) {
-                $gallery->setPosition($allGalleries[count($allGalleries) - 1]->getPosition() + 10);
-            } else {
-                $gallery->setPosition(1);
+                $allGalleries = $this->getDoctrine()->getRepository(Gallery::class)->findAll();
+                if(count($allGalleries) > 0) {
+                    $gallery->setPosition($allGalleries[count($allGalleries) - 1]->getPosition() + 10);
+                } else {
+                    $gallery->setPosition(1);
+                }
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -207,6 +207,23 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/gallery/{galleryId}/exif/{imageId}", name="b3gallery.admin.exif")
+     */
+    public function exifAction($galleryId, $imageId)
+    {
+        $image = $this->getDoctrine()->getRepository(Image::class)->find($imageId);
+        $fullImagePath = $this->getParameter('gallery_directory') . '/' . $galleryId . '/1920/' . $image->getFilename();
+        $exif = exif_read_data($fullImagePath, 'ANY_TAG');
+        exit(dump($exif));
+//        try {
+//            $em->flush();
+//            return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $galleryId]);
+//        } catch (\Exception $e) {
+//            exit(dump($e));
+//        }
+    }
+
+    /**
      * @Route("/gallery/{galleryId}/image/delete/{imageId}", name="b3gallery.admin.image_delete")
      */
     public function imageDeleteAction($galleryId, $imageId)
@@ -240,10 +257,13 @@ class AdminController extends Controller
             1280,
             1920,
         ];
+        if ($image->getIsSpherical()) {
+            $sizes[] = 'sphere';
+        }
         try {
             foreach ($sizes as $size) {
                 $imagePath = $this->getParameter('gallery_directory') . '/' . $galleryId . '/' . $size . '/' . $image->getFilename();
-                unlink($imagePath);
+                @unlink($imagePath);
             }
             return true;
         } catch (\Exception $e) {

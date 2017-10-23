@@ -45,3 +45,7 @@
 * add _Video_ uploading, previewing and viewing (and maybe processing)
 
 * add another public _Gallery_ templates
+
+* filter visits
+
+* add spherical photo viewer

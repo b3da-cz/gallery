@@ -6,6 +6,7 @@ namespace b3da\GalleryBundle\Form\Type;
 
 use b3da\GalleryBundle\Entity\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -39,6 +40,10 @@ class ImageType extends AbstractType
             ])
             ->add('height', TextType::class, [
                 'label' => 'Image height (px)',
+                'required' => false,
+            ])
+            ->add('isSpherical', CheckboxType::class, [
+                'label' => 'Is spherical?',
                 'required' => false,
             ])
             ->add('submit', SubmitType::class, [

@@ -14,8 +14,8 @@
                 </div>
                 {% endif %}
                 <br>
-                {#<a href="{{ path('b3gallery.admin.image_resize', {galleryId: galleryId, imageId: image.id}) }}">resize</a>#}
-                {#<br>#}
+                <a href="{{ path('b3gallery.admin.exif', {galleryId: galleryId, imageId: image.id}) }}">exif</a>
+                <br>
                 <a href="{{ path('b3gallery.admin.image_delete', {galleryId: galleryId, imageId: image.id}) }}">delete</a>
             </div>
         </div>

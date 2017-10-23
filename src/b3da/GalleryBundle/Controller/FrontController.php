@@ -134,6 +134,23 @@ class FrontController extends Controller
         return $response;
     }
 
+
+    /**
+     * @Route("/gallery-sphere/{id}", name="b3gallery.front.gallery_sphere")
+     */
+    public function gallerySphereAction(Request $request, $id)
+    {
+        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
+        $this->logVisit($request, $gallery, null);
+        if (!$gallery || !$gallery->getIsPublic()) {
+            return new JsonResponse(['error' => 'not found or denied'], 418);
+        }
+        if ($gallery->getPassword() > '') {
+            $this->unlockGallery($gallery);
+        }
+        return $this->render('b3daGalleryBundle:Front:gallerySphere.html.twig', ['gallery' => $gallery]);
+    }
+
     protected function unlockGallery($gallery) {
         // todo: refactor && cleanup
         if (!isset($_SERVER['PHP_AUTH_PW'])) {

@@ -59,6 +59,11 @@ class Image
     protected $mainColor;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $isSpherical;
+
+    /**
      * @ORM\OneToMany(targetEntity="Visit", mappedBy="image")
      */
     private $visits;
@@ -273,6 +278,30 @@ class Image
     public function getMainColor()
     {
         return $this->mainColor;
+    }
+
+    /**
+     * Set isSpherical
+     *
+     * @param boolean $isSpherical
+     *
+     * @return Image
+     */
+    public function setIsSpherical($isSpherical)
+    {
+        $this->isSpherical = $isSpherical;
+
+        return $this;
+    }
+
+    /**
+     * Get isSpherical
+     *
+     * @return boolean
+     */
+    public function getIsSpherical()
+    {
+        return $this->isSpherical;
     }
 
     /**

@@ -7,8 +7,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ImageResizer {
-    public function resizeImageExternally($fullImagePath, $newFullImagePath, $widthOrSize, $height = 0, $squareCrop = false, $autoRotate = true) {
-        $cmd = 'vipsthumbnail ' . $fullImagePath . ' -o ' . $newFullImagePath . '[Q=69] ';
+    public function resizeImageExternally($fullImagePath, $newFullImagePath, $widthOrSize, $height = 0, $squareCrop = false, $autoRotate = true, $jpegQuality = 69) {
+        $cmd = 'vipsthumbnail ' . $fullImagePath . ' -o ' . $newFullImagePath . '[Q=' . $jpegQuality . '] ';
 //        $cmd = 'vipsthumbnail ' . $fullImagePath . ' -o ' . $newFullImagePath . ' '; // todo: non jpeg?
         if ($widthOrSize > 0 && $height > 0) {
             $cmd .= '-s ' . $widthOrSize . 'x' . $height . ' ';

@@ -93,6 +93,10 @@ class UploadListener
     }
 
     protected function makeThumbnails(Image $image, $galleryId) {
+        if ($this->isImageSpherical($image, $galleryId)) {
+            $image->setIsSpherical(true);
+            $this->makeSphericalThumbnail($image, $galleryId);
+        }
         $sizes = [
             640,
             1280,
@@ -107,8 +111,47 @@ class UploadListener
                 $size,
                 0,
                 false,
-                true
+                true,
+                67
             );
         }
+    }
+
+    protected function makeSphericalThumbnail(Image $image, $galleryId) {
+        $fullImagePath = $this->galleryDir . '/' . $galleryId . '/' . $image->getFilename();
+        $resizedFullImagePath = $this->galleryDir . '/' . $galleryId . '/sphere/' . $image->getFilename();
+        $imageSizes = getimagesize($fullImagePath);
+        list($x, $y) = $imageSizes;
+        if ($x > 6000) {
+            $x = round($x * 0.9);
+            $y = round($y * 0.9);
+        }
+        $this->imageResizer->resizeImageExternally(
+            $fullImagePath,
+            $resizedFullImagePath,
+            $x,
+            $y,
+            false,
+            true,
+            57
+        );
+
+    }
+
+    protected function isImageSpherical(Image $image, $galleryId) {
+        $fullImagePath = $this->galleryDir . '/' . $galleryId . '/' . $image->getFilename();
+//        $exif = exif_read_data($fullImagePath, 'ANY_TAG');
+//        exit(dump($exif));
+        $content = file_get_contents($fullImagePath);
+        $xmpDataStart = strpos($content, '<x:xmpmeta');
+        $xmpDataEnd = strpos($content, '</x:xmpmeta>');
+        $xmpLength = $xmpDataEnd - $xmpDataStart;
+        $xmpData = substr($content, $xmpDataStart, $xmpLength + 12);
+//        $xmp = simplexml_load_string($xmpData);
+        if (strpos($xmpData, 'UsePanoramaViewer="True"') !== false
+            || strpos($xmpData, 'ProjectionType="equirectangular"') !== false) {
+            return true;
+        }
+        return false;
     }
 }

@@ -59,6 +59,11 @@ class Image
     protected $mainColor;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $isSpherical;
+
+    /**
      * @ORM\OneToMany(targetEntity="Visit", mappedBy="image")
      */
     private $visits;
@@ -273,5 +278,51 @@ class Image
     public function getMainColor()
     {
         return $this->mainColor;
+    }
+
+    /**
+     * Add visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     *
+     * @return Image
+     */
+    public function addVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setImage($this);
+        $this->visits[] = $visit;
+
+        return $this;
+    }
+
+    /**
+     * Remove visit
+     *
+     * @param \b3da\GalleryBundle\Entity\Visit $visit
+     */
+    public function removeVisit(\b3da\GalleryBundle\Entity\Visit $visit)
+    {
+        $visit->setImage(null);
+        $this->visits->removeElement($visit);
+    }
+
+    /**
+     * Get visits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    /**
+     * Get visitCount
+     *
+     * @return integer
+     */
+    public function getVisitCount()
+    {
+        return count($this->visits);
     }
 }
