@@ -120,12 +120,27 @@ div.image-ctrl-close {
     height: 5vh;
     width: calc(20vw - 1rem);
     right: 0;
-    opacity: 0.4;
+    opacity: 0.33;
     z-index: 12;
+}
+div.image-ctrl-download {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1rem;
+    height: 5vh;
+    width: 5vh;
+    right: 0;
+    bottom: 1rem;
+    opacity: 0.1;
+    transition: opacity 300ms linear;
+    z-index: 15;
+    cursor: pointer;
 }
 div.image-ctrl-close i.fa {
     font-size: 3rem;
 }
-div.image-ctrl:hover {
+div.image-ctrl:hover, div.image-ctrl-download:hover {
     opacity: 0.7;
 }

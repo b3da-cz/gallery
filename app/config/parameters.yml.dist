@@ -18,9 +18,17 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    # titles, downloaded files
+    gallery_name: 'b3gallery'
+    # main heading on homepage, leave empty '' for none
     gallery_main_heading: 'b3da photo gallery'
+    # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)
     gallery_http_realm: 'changeThisOnlyONCE'
+    # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)
     gallery_password_salt: 'change this to something only ONCE!'
+    # your web hostname (https://domain.tld)
     gallery_hostname: 'http://localhost/my/b3gallery'
+
+    # leave as is, change only in case you know what you are doing
     gallery_directory: '%kernel.project_dir%/web/uploads/gallery'
     twig_gallery_directory: '%gallery_hostname%/web/uploads/gallery'

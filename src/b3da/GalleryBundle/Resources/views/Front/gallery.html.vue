@@ -27,6 +27,9 @@
           <!--<i class="fa fa-close"></i>-->
           <strong style="font-size: 4rem">&times;</strong>
         </div>
+        <div v-on:click="downloadImage" class="image-ctrl-download">
+          <strong style="font-size: 4rem">&downarrow;</strong>
+        </div>
         <div v-if="currentImage.description" class="image-description">
           <p>
             {{currentImage.description}}

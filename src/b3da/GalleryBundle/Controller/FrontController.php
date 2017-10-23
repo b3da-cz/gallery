@@ -8,8 +8,10 @@ use b3da\GalleryBundle\Entity\Visit;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 
 class FrontController extends Controller
@@ -100,7 +102,36 @@ class FrontController extends Controller
         if (!$image) {
             return new JsonResponse(['error' => 'not found or denied'], 418);
         }
-        return new BinaryFileResponse($this->getParameter('gallery_directory') . '/' . $galleryId . '/' . $size . '/' . $image->getFilename());
+
+        $fullImagePath = $this->getParameter('gallery_directory') . '/' . $galleryId . '/' . $size . '/' . $image->getFilename();
+        $response = new BinaryFileResponse($fullImagePath);
+
+        if ($request->query->get('d')) {
+            $extension = explode('.', $image->getFilename());
+            $extension = strtolower($extension[count($extension) - 1]);
+            $mimeTypeGuesser = new FileinfoMimeTypeGuesser();
+            if ($mimeTypeGuesser->isSupported()){
+                $response->headers->set('Content-Type', $mimeTypeGuesser->guess($fullImagePath));
+            } else {
+                switch ($extension) {
+                    case 'png':
+                        $response->headers->set('Content-Type', 'image/png');
+                        break;
+                    case 'gif':
+                        $response->headers->set('Content-Type', 'image/gif');
+                        break;
+                    case 'jpg':
+                    case 'jpeg':
+                        $response->headers->set('Content-Type', 'image/jpeg');
+                        break;
+                }
+            }
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $this->getParameter('gallery_name') . '-gallery-' . $galleryId . '-image-' . $image->getId() . '.' . $extension
+            );
+        }
+        return $response;
     }
 
     protected function unlockGallery($gallery) {

@@ -63,6 +63,9 @@
               this.hideImage();
             }
           },
+          downloadImage: function () {
+            window.open(`${this.currentImage.url}?d=1`);
+          },
           keyPressed: function (event) {
             switch (event.keyCode) {
               case 37:

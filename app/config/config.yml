@@ -38,6 +38,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
+        gallery_name: '%gallery_name%'
         gallery_main_heading: '%gallery_main_heading%'
         gallery_directory: '%twig_gallery_directory%'
 
