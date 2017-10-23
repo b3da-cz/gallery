@@ -22,6 +22,8 @@ parameters:
     gallery_name: 'b3gallery'
     # main heading on homepage, leave empty '' for none
     gallery_main_heading: 'b3da photo gallery'
+    # listing style - can be 'fullscreen' or 'tabs'
+    gallery_listing: 'fullscreen'
     # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)
     gallery_http_realm: 'changeThisOnlyONCE'
     # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)

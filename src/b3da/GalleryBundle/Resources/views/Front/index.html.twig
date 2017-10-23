@@ -1,29 +1,11 @@
 {% extends '@b3daGallery/layout.html.twig' %}
 
 {% block body %}
-    <h1 class="margin-left">{{ gallery_main_heading }}</h1>
-    {% if galleries is defined and galleries is not empty %}
-        <div class="gallery-list-container">
-            {% for gallery in galleries %}
-                <div class="gallery-tab-container">
-                    <div class="gallery-image-thumb-container">
-                        {% if gallery.frontImage is not null and gallery.frontImage.filename is not null %}
-                            <a href="{{ path('b3gallery.front.gallery', {id: gallery.id}) }}" class="no-border">
-                                <img src="{{ gallery_directory ~ '/' ~ gallery.id ~ '/640/' ~ gallery.frontImage.fileName }}" alt="{{ gallery.frontImage.title }}" class="gallery-image-thumb">
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="gallery-title-container">
-                        <a href="{{ path('b3gallery.front.gallery', {id: gallery.id}) }}">{{ gallery.title }}</a>
-                        <div class="margin-vertical">
-                            <h2 class="gallery-subheading-date">{{ gallery.dateCreated | date('d.m.Y H:i') }}</h2>
-                        </div>
-                        {% if gallery.password > '' %}<h2 class="gallery-subheading-date">&lfloor;&otimes;&rceil; locked</h2>{% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-      <h2>Welcome! there are no galleries at the moment</h2>
-    {% endif %}
+{% if gallery_listing == 'fullscreen' %}
+    {% include '@b3daGallery/Front/listingFullscreen.html.twig' %}
+{% elseif gallery_listing == 'tabs' %}
+    {% include '@b3daGallery/Front/listingTabs.html.twig' %}
+{% else %}
+    <h2>Please specify valid `gallery_listing` (in app/config/parameters.yml). Options are `fullscreen` or `tabs`</h2>
+{% endif %}
 {% endblock %}

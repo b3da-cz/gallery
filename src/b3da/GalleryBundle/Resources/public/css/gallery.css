@@ -144,3 +144,49 @@ div.image-ctrl-close i.fa {
 div.image-ctrl:hover, div.image-ctrl-download:hover {
     opacity: 0.7;
 }
+
+
+div.gallery-list-fs-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.gallery-tab-fs-container {
+    background-size:  cover;
+    background: #333 no-repeat fixed center center;
+    background-size: 190%;
+    width: 100%;
+    height: 100vh;
+    border-bottom: 4px solid #fff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.gallery-tab-fs-container:hover {
+    -webkit-filter: brightness(123%);
+    filter: brightness(123%);
+}
+.gallery-tab-fs-container:hover a {
+    border-bottom: 0.3rem solid #ff8800;
+    color: #000
+}
+.gallery-fs-title-container {
+    width: 60%;
+    height: 15vh;
+    background-color: #fff;
+    opacity: 0.65;
+}
+
+@media only screen and (min-width: 1240px) {
+    .gallery-tab-fs-container { background-size: 150%; }
+    .gallery-fs-title-container { width: 40%; }
+}
+@media only screen and (min-width: 1590px) {
+    .gallery-tab-fs-container { background-size: 120%; }
+    .gallery-fs-title-container { width: 30%; }
+}
+@media only screen and (max-width: 799px) {
+    .gallery-tab-fs-container { background-size: 240%; }
+    .gallery-fs-title-container { width: 70%; }
+}

@@ -12,7 +12,7 @@
     {% endblock %}
 </head>
 <body>
-<main>
+<main{% if gallery_listing == 'fullscreen' %} class="no-margin"{% endif %}>
 {% block body %}{% endblock %}
 </main>
 {% block javascripts %}

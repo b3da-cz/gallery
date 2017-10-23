@@ -35,6 +35,14 @@ a.no-border { border-bottom: none }
 .padding-top { padding-top: 1rem }
 .padding-bottom { padding-bottom: 1rem }
 
+.fixed-fs {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 .color-secondary { color: #979B9E }
 .color-primary { color: #ff8800 }
 
@@ -124,4 +132,8 @@ img.gallery-image-thumb {
     .gallery-tab-container {
         width: 50%;
     }
+}
+
+.no-margin {
+    margin: 0!important;
 }

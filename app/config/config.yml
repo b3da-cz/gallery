@@ -40,6 +40,7 @@ twig:
     globals:
         gallery_name: '%gallery_name%'
         gallery_main_heading: '%gallery_main_heading%'
+        gallery_listing: '%gallery_listing%'
         gallery_directory: '%twig_gallery_directory%'
 
 # Doctrine Configuration
