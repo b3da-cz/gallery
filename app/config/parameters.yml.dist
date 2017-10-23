@@ -24,6 +24,8 @@ parameters:
     gallery_main_heading: 'b3da photo gallery'
     # listing style - can be 'fullscreen' or 'tabs'
     gallery_listing: 'fullscreen'
+    # keep or delete original uploaded images after transform - true or false (without quotes)
+    gallery_keep_original_uploads: false
     # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)
     gallery_http_realm: 'changeThisOnlyONCE'
     # for gallery password protection, set it up and backup string (all password protected galleries will need to set new password after change of this)

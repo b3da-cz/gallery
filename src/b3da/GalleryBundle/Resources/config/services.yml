@@ -1,7 +1,7 @@
 services:
     b3da_gallery.upload_listener:
         class: b3da\GalleryBundle\EventListener\UploadListener
-        arguments: ["@doctrine.orm.default_entity_manager", "@b3da_gallery.image_resizer", "%gallery_directory%"]
+        arguments: ["@doctrine.orm.default_entity_manager", "@b3da_gallery.image_resizer", "%gallery_directory%", "%gallery_keep_original_uploads%"]
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
     b3da_gallery.gallery_namer:

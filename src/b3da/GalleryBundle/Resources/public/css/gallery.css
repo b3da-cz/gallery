@@ -163,9 +163,12 @@ div.gallery-list-fs-container {
     align-items: center;
     cursor: pointer;
 }
+.gallery-tab-fs-container:last-of-type {
+    border-bottom: none;
+}
 .gallery-tab-fs-container:hover {
-    -webkit-filter: brightness(123%);
-    filter: brightness(123%);
+    -webkit-filter: brightness(112%);
+    filter: brightness(112%);
 }
 .gallery-tab-fs-container:hover a {
     border-bottom: 0.3rem solid #ff8800;
@@ -173,6 +176,7 @@ div.gallery-list-fs-container {
 }
 .gallery-fs-title-container {
     width: 60%;
+    margin-bottom: 10rem;
     height: 15vh;
     background-color: #fff;
     opacity: 0.65;

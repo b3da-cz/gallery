@@ -6,7 +6,7 @@
 
 * clone this repo, run `composer install` in project dir
 
-* set db and directory info in `app/config/parameters.yml` (in case you didn't at the end of composer install...)
+* set db and directory info in `app/config/parameters.yml` (in case you didn't at the end of composer install) as well as some gallery options - see commented `parameters.yml.dist` for details
 
 * create db by running `bin/console d:d:c`
 

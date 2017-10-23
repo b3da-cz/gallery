@@ -26,11 +26,17 @@ class UploadListener
      */
     private $galleryDir;
 
-    public function __construct(EntityManager $em, $imageResizer, $galleryDirectory)
+    /**
+     * @var boolean
+     */
+    private $keepOriginalUploads;
+
+    public function __construct(EntityManager $em, $imageResizer, $galleryDirectory, $keepOriginalUploads)
     {
         $this->em = $em;
         $this->imageResizer = $imageResizer;
         $this->galleryDir = $galleryDirectory;
+        $this->keepOriginalUploads = $keepOriginalUploads;
     }
 
     public function onUpload(PostPersistEvent $event)
@@ -72,6 +78,9 @@ class UploadListener
 //            $this->em->flush();
             $image->setMainColor($this->imageResizer->getMainColorForImage($this->galleryDir . '/' . $galleryId . '/640/' . $image->getFilename()));
             $this->em->flush();
+            if (!$this->keepOriginalUploads) {
+                unlink($this->galleryDir . '/' . $galleryId . '/' . $image->getFilename());
+            }
         } catch (\Exception $e) {
             $response = $event->getResponse();
             $response['error'] = true;

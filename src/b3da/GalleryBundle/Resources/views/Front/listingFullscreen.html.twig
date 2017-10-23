@@ -6,7 +6,7 @@
             {#<div class="gallery-tab-fs-container"{% if gallery.frontImage is not null and gallery.frontImage.filename is not null %} style="background-image: url({{ gallery_directory ~ '/' ~ gallery.id ~ '/1920/' ~ gallery.frontImage.fileName }});"{% endif %}>#}
                 <div class="gallery-fs-title-container">
                     <div class="margin-top">
-                        <a href="{{ path('b3gallery.front.gallery', {id: gallery.id}) }}" class="link-big margin-left">{{ gallery.title }}</a>
+                        <a href="{{ path('b3gallery.front.gallery', {id: gallery.id}) }}" class="link-big margin-left">{{ gallery.title }} &gt;&gt;</a>
                     </div>
                     <div class="margin-vertical">
                         <h2 class="gallery-subheading-date">{{ gallery.dateCreated | date('d.m.Y H:i') }}</h2>

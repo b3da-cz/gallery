@@ -54,11 +54,13 @@ class Visit
 
     /**
      * @ORM\ManyToOne(targetEntity="Gallery", inversedBy="visits")
+     * @ORM\JoinColumn(name="gallery_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $gallery;
 
     /**
      * @ORM\ManyToOne(targetEntity="Image", inversedBy="visits")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $image;
 

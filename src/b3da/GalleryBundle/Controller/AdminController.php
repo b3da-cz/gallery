@@ -207,35 +207,6 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/gallery/{galleryId}/image/resize/{imageId}", name="b3gallery.admin.image_resize")
-     */
-    public function imageResizeAction($galleryId, $imageId)
-    {
-        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($galleryId);
-        $image = $this->getDoctrine()->getRepository(Image::class)->find($imageId);
-        $fullImagePath = $this->getParameter('gallery_directory') . '/' . $galleryId . '/' . $image->getFilename();
-        $resizedFullImagePath = $this->getParameter('gallery_directory') . '/' . $galleryId . '/640/' . $image->getFilename();
-        $resizedImageDir = $this->getParameter('gallery_directory') . '/' . $galleryId . '/640/';
-        $imageResizer = $this->container->get('b3da_gallery.image_resizer');
-//        $imageResizer->resizeImageExternally(
-//            $fullImagePath,
-//            $resizedFullImagePath,
-//            1920,
-//            0,
-//            false
-//        );
-        $foo = $imageResizer->getMainColorForImage($resizedFullImagePath);
-        exit(dump($foo));
-//        $em = $this->getDoctrine()->getManager();
-        try {
-//            $em->flush();
-            return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $galleryId]);
-        } catch (\Exception $e) {
-            exit(dump($e));
-        }
-    }
-
-    /**
      * @Route("/gallery/{galleryId}/image/delete/{imageId}", name="b3gallery.admin.image_delete")
      */
     public function imageDeleteAction($galleryId, $imageId)
@@ -253,7 +224,9 @@ class AdminController extends Controller
         try {
             $em->remove($image);
             $em->flush();
-            unlink($fullImagePath);
+//            if ($this->getParameter('gallery_keep_original_uploads')) {
+                @unlink($fullImagePath);
+//            }
             $this->deleteThumbnails($image, $galleryId);
             return $this->redirectToRoute('b3gallery.admin.gallery', ['id' => $galleryId]);
         } catch (\Exception $e) {
