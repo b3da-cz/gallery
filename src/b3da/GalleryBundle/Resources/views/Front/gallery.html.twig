@@ -15,8 +15,18 @@
   {% include 'b3daGalleryBundle:Front:gallery.html.vue' %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% if isSpherical == true %}
+      <link rel="stylesheet" href="{{ asset('bundles/b3dagallery/css/pannellum.min.css') }}">
+    {% endif %}
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
+    {% if isSpherical == true %}
+      <script src="{{ asset('bundles/b3dagallery/js/pannellum.min.js') }}"></script>
+    {% endif %}
     <script>
       var images = {{ render(controller('b3daGalleryBundle:Front:galleryJson', {id: gallery.id})) }};
 
@@ -43,11 +53,16 @@
           },
           showImage: function (event, img) {
             this.currentImage = img;
+            if (this.currentImage && this.currentImage.isSpherical) {
+              this.initSphereViewer();
+            }
           },
           hideImage: function () {
+            this.destroySphereViewer();
             this.currentImage = null;
           },
           previousImage: function () {
+            this.destroySphereViewer();
             const currentIndex = this.imgs.indexOf(this.currentImage);
             if (currentIndex > 0) {
               this.showImage(null, this.imgs[currentIndex - 1]);
@@ -56,6 +71,7 @@
             }
           },
           nextImage: function () {
+            this.destroySphereViewer();
             const currentIndex = this.imgs.indexOf(this.currentImage);
             if (this.imgs.length > currentIndex) {
               this.showImage(null, this.imgs[currentIndex + 1]);
@@ -77,6 +93,24 @@
               case 27:
                 this.hideImage();
                 break;
+            }
+          },
+          initSphereViewer: function () {
+            console.warn(this.currentImage); // TODO: remove
+            if (pannellum) {
+              document.getElementById('sphere-viewer').classList.add('active');
+              window.activeViewer = pannellum.viewer('sphere-viewer', {
+                autoLoad: false,
+                type: 'equirectangular',
+                panorama: this.currentImage.url,
+                preview: this.currentImage.urlThumb,
+              });
+            }
+          },
+          destroySphereViewer: function () {
+            if (window.activeViewer && this.currentImage && this.currentImage.isSpherical) {
+              window.activeViewer.destroy();
+              document.getElementById('sphere-viewer').classList.remove('active');
             }
           }
         }

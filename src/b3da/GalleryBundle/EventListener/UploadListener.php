@@ -110,7 +110,7 @@ class UploadListener
                 $resizedFullImagePath,
                 $size,
                 0,
-                false,
+                $image->getIsSpherical(),
                 true,
                 67
             );

@@ -9,3 +9,8 @@ services:
         arguments: ["@request_stack"]
     b3da_gallery.image_resizer:
         class: b3da\GalleryBundle\Util\ImageResizer
+    b3da_gallery.twig.picture:
+        class: b3da\GalleryBundle\Twig\PictureFunction
+        arguments: ["%twig_gallery_directory%"]
+        tags:
+          - { name: twig.extension }

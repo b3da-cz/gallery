@@ -44,7 +44,17 @@ class FrontController extends Controller
         if ($gallery->getPassword() > '') {
             $this->unlockGallery($gallery);
         }
-        return $this->render('b3daGalleryBundle:Front:gallery.html.twig', ['gallery' => $gallery]);
+        $isSpherical = false;
+        /** @var Image $image */
+        foreach ($gallery->getImages() as $image) {
+            if ($image->getIsSpherical()) {
+                $isSpherical = true;
+            }
+        }
+        return $this->render('b3daGalleryBundle:Front:gallery.html.twig', [
+            'gallery' => $gallery,
+            'isSpherical' => $isSpherical,
+        ]);
     }
 
     /**
@@ -73,13 +83,14 @@ class FrontController extends Controller
                 'url' => $this->generateUrl('b3gallery.front.image', [
                     'galleryId' => $gallery->getId(),
                     'imageId' => $image->getId(),
-                    'size' => '1920',
+                    'size' => $image->getIsSpherical() ? 'sphere' : '1920',
                 ]),
 //                'urlThumb' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/640/' . $image->getFilename(),
 //                'url' => $this->getParameter('twig_gallery_directory') . '/' . $id . '/1920/' . $image->getFilename(),
                 'width' => $image->getWidth(),
                 'height' => $image->getHeight(),
                 'mainColor' => $image->getMainColor() ? $image->getMainColor() : 'rgba(193, 193, 193, 0.65)',
+                'isSpherical' => $image->getIsSpherical(),
             ];
         }
         return new JsonResponse($result);
@@ -135,21 +146,22 @@ class FrontController extends Controller
     }
 
 
-    /**
-     * @Route("/gallery-sphere/{id}", name="b3gallery.front.gallery_sphere")
-     */
-    public function gallerySphereAction(Request $request, $id)
-    {
-        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
-        $this->logVisit($request, $gallery, null);
-        if (!$gallery || !$gallery->getIsPublic()) {
-            return new JsonResponse(['error' => 'not found or denied'], 418);
-        }
-        if ($gallery->getPassword() > '') {
-            $this->unlockGallery($gallery);
-        }
-        return $this->render('b3daGalleryBundle:Front:gallerySphere.html.twig', ['gallery' => $gallery]);
-    }
+    // todo: cleanup test route
+//    /**
+//     * @Route("/gallery-sphere/{id}", name="b3gallery.front.gallery_sphere")
+//     */
+//    public function gallerySphereAction(Request $request, $id)
+//    {
+//        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
+//        $this->logVisit($request, $gallery, null);
+//        if (!$gallery || !$gallery->getIsPublic()) {
+//            return new JsonResponse(['error' => 'not found or denied'], 418);
+//        }
+//        if ($gallery->getPassword() > '') {
+//            $this->unlockGallery($gallery);
+//        }
+//        return $this->render('b3daGalleryBundle:Front:gallerySphere.html.twig', ['gallery' => $gallery]);
+//    }
 
     protected function unlockGallery($gallery) {
         // todo: refactor && cleanup
@@ -169,6 +181,10 @@ class FrontController extends Controller
     }
 
     protected function logVisit(Request $request, $gallery = null, $image = null) {
+        $env = $this->container->get('kernel')->getEnvironment();
+        if ($env !== 'prod') {
+            return;
+        }
         $visit = new Visit();
         $visit->setDate(new \DateTime());
         $visit->setIp($request->getClientIp());
@@ -253,7 +269,7 @@ class FrontController extends Controller
             'name'      => $bname,
             'version'   => $version,
             'platform'  => $platform,
-            'pattern'    => $pattern
+            'pattern'    => $pattern,
         ];
     }
 }

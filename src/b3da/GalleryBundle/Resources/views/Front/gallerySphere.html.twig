@@ -4,28 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>b3gallery sphere</title>
-  <link rel="stylesheet" href="https://cdn.pannellum.org/2.3/pannellum.css"/>
-  <script type="text/javascript" src="https://cdn.pannellum.org/2.3/pannellum.js"></script>
-  <style>
-    #panorama {
-      width: 100%;
-      height: 98vh;
-    }
-  </style>
+  {#<link rel="stylesheet" href="https://cdn.pannellum.org/2.3/pannellum.css"/>#}
+  {#<script type="text/javascript" src="https://cdn.pannellum.org/2.3/pannellum.js"></script>#}
+  {#<style>#}
+    {##panorama {#}
+      {#width: 100%;#}
+      {#height: 98vh;#}
+    {#}#}
+  {#</style>#}
 </head>
 <body>
+{{ picture(4, '2d01540d09d401d28c0f8b09a39fda12.jpg') }}
+{#<div id="sphere-viewer-container">#}
+  {#<div id="sphere-viewer"></div>#}
+{#</div>#}
 
-<div id="panorama"></div>
-<script>
-  pannellum.viewer('panorama', {
-    autoLoad: true,
-    type: 'equirectangular',
-//    panorama: "http://localhost/my/b3gallery/web/app_dev.php/gallery/3/image/85/1920" // pano
-//    panorama: "http://localhost/my/b3gallery/web/app_dev.php/gallery/4/image/91/1920" // true sphere
-    panorama: "http://localhost/my/b3gallery/web/app_dev.php/gallery/4/image/94/sphere" // true sphere
-//    panorama: "https://pannellum.org/images/alma.jpg"
-  });
-</script>
+{#<script>#}
+  {#pannellum.viewer('panorama', {#}
+    {#autoLoad: true,#}
+    {#type: 'equirectangular',#}
+    {#panorama: "http://localhost/my/b3gallery/web/app_dev.php/gallery/4/image/94/sphere" // true sphere#}
+  {#});#}
+{#</script>#}
 
 </body>
 </html>

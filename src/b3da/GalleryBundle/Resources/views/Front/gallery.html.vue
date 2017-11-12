@@ -9,15 +9,19 @@
       </div>
     </section>
     <div id="image-modal" v-bind:class="{'active': !!currentImage}">
+      <div id="sphere-viewer"></div>
       <div v-if="!!currentImage">
         <div v-on:click="previousImage" class="image-ctrl image-ctrl-prev">
           <!--<i class="fa fa-chevron-left"></i>-->
           <strong style="font-size: 4rem">&lt;</strong>
         </div>
-        <div v-if="!!currentImage">
+        <div v-if="!!currentImage && !currentImage.isSpherical">
           <h3 v-if="currentImage.title">{{currentImage.title}}</h3>
           <img v-bind:src="currentImage.url"
                v-on:click="hideImage" alt="">
+        </div>
+        <div v-if="!!currentImage && currentImage.isSpherical">
+          <h3 v-if="currentImage.title">{{currentImage.title}}</h3>
         </div>
         <div v-on:click="nextImage" class="image-ctrl image-ctrl-next">
           <!--<i class="fa fa-chevron-right"></i>-->
