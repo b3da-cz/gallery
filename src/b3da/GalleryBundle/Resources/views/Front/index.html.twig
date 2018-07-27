@@ -1,5 +1,13 @@
 {% extends '@b3daGallery/layout.html.twig' %}
 
+{% block title %}
+    {% if about is defined and about is not null and about.title > '' %}
+        {{ about.title }}
+    {% else %}
+        {{ gallery_name }}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 {% if gallery_listing == 'fullscreen' %}
     {% include '@b3daGallery/Front/listingFullscreen.html.twig' %}

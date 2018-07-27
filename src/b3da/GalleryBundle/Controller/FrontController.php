@@ -2,6 +2,7 @@
 
 namespace b3da\GalleryBundle\Controller;
 
+use b3da\GalleryBundle\Entity\About;
 use b3da\GalleryBundle\Entity\Gallery;
 use b3da\GalleryBundle\Entity\Image;
 use b3da\GalleryBundle\Entity\Visit;
@@ -22,12 +23,14 @@ class FrontController extends Controller
     public function indexAction(Request $request)
     {
         $this->logVisit($request, null, null);
+        $about = $this->getDoctrine()->getRepository(About::class)->find(1);
         return $this->render('b3daGalleryBundle:Front:index.html.twig', [
             'galleries' => $this->getDoctrine()->getRepository(Gallery::class)->findBy([
                 'isPublic' => true,
             ], [
                 'position' => 'ASC',
             ]),
+            'about' => $about,
         ]);
     }
 
@@ -145,23 +148,18 @@ class FrontController extends Controller
         return $response;
     }
 
-
-    // todo: cleanup test route
-//    /**
-//     * @Route("/gallery-sphere/{id}", name="b3gallery.front.gallery_sphere")
-//     */
-//    public function gallerySphereAction(Request $request, $id)
-//    {
-//        $gallery = $this->getDoctrine()->getRepository(Gallery::class)->find($id);
-//        $this->logVisit($request, $gallery, null);
-//        if (!$gallery || !$gallery->getIsPublic()) {
-//            return new JsonResponse(['error' => 'not found or denied'], 418);
-//        }
-//        if ($gallery->getPassword() > '') {
-//            $this->unlockGallery($gallery);
-//        }
-//        return $this->render('b3daGalleryBundle:Front:gallerySphere.html.twig', ['gallery' => $gallery]);
-//    }
+    /**
+     * @Route("/about", name="b3gallery.front.about")
+     */
+    public function aboutAction(Request $request)
+    {
+        $this->logVisit($request, null, null);
+        $about = $this->getDoctrine()->getRepository(About::class)->find(1);
+        if (!$about || !$about->getIsActive()) {
+            return new JsonResponse(['error' => 'not found or denied'], 418);
+        }
+        return $this->render('b3daGalleryBundle:Front:about.html.twig', ['about' => $about]);
+    }
 
     protected function unlockGallery($gallery) {
         // todo: refactor && cleanup

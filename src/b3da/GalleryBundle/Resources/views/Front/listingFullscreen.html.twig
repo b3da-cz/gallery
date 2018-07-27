@@ -1,4 +1,13 @@
-<h1 class="margin-left">{{ gallery_main_heading }}</h1>
+<h1 class="margin-left">
+    {% if about is defined and about is not null and about.heading > '' %}
+        {{ about.heading }}
+        {% if about.isActive %}
+            <a href="{{ path('b3gallery.front.about') }}" class="link-about">about &gt;&gt;</a>
+        {% endif %}
+    {% else %}
+        {{ gallery_main_heading }}
+    {% endif %}
+</h1>
 {% if galleries is defined and galleries is not empty %}
     <div class="gallery-list-fs-container">
         {% for gallery in galleries %}

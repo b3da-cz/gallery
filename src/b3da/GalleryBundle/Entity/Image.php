@@ -64,6 +64,11 @@ class Image
     protected $isSpherical;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $isAboutImage;
+
+    /**
      * @ORM\OneToMany(targetEntity="Visit", mappedBy="image")
      */
     private $visits;
@@ -302,6 +307,30 @@ class Image
     public function getIsSpherical()
     {
         return $this->isSpherical;
+    }
+
+    /**
+     * Set isAboutImage
+     *
+     * @param boolean $iAboutImage
+     *
+     * @return Image
+     */
+    public function setIsAboutImage($iAboutImage)
+    {
+        $this->isAboutImage = $iAboutImage;
+
+        return $this;
+    }
+
+    /**
+     * Get isAboutImage
+     *
+     * @return boolean
+     */
+    public function getIsAboutImage()
+    {
+        return $this->isAboutImage;
     }
 
     /**

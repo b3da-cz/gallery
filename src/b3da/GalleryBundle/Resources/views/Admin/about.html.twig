@@ -1,0 +1,42 @@
+{% extends '@b3daGallery/layoutAdmin.html.twig' %}
+
+{% block body %}
+    <div class="margin-bottom">
+        <a href="{{ path('b3gallery.admin.index') }}" class="link-big">&lt;&lt; back</a>
+    </div>
+    <div class="flex-row">
+        <div class="col-50">
+            {{ form(form, {attr: {class: 'pure-form pure-form-stacked'}}) }}
+        </div>
+        <div class="col-50">
+            {% if about is defined and about is not null and about.image is not null %}
+            <div class="image-container">
+                <img src="{{ gallery_directory ~ '/' ~ about.image.filename }}" alt="{{ about.heading }}">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        input, textarea {
+            width: 100%;
+        }
+        input[type=checkbox] {
+            height: 2rem;
+            width: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        textarea {
+            min-height: 300px;
+        }
+        .image-container,
+        .image-container img {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}

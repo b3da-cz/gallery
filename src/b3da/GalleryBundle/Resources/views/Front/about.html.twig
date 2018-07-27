@@ -1,0 +1,45 @@
+{% extends '@b3daGallery/layout.html.twig' %}
+
+{% block title %}
+    {% if about is defined and about is not null and about.title > '' %}
+        {{ about.title }}
+    {% else %}
+        {{ gallery_name }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+  <div class="flex-row">
+    {% if about is defined and about is not null %}
+    <div>
+      <h2 class="gallery-heading">{{ about.heading }}</h2>
+      <h2 class="gallery-subheading-date">{{ about.subheading }}</h2>
+    </div>
+    <div class="padding-top">
+      <a href="{{ path('b3gallery.front.index') }}" class="link-big">&lt;&lt; list</a>
+    </div>
+    {% endif %}
+  </div>
+  <div>
+      {% if about is defined and about is not null and about.image is not null %}
+          <div class="image-container">
+              <img src="{{ gallery_directory ~ '/' ~ about.image.filename }}" alt="{{ about.heading }}">
+          </div>
+      {% endif %}
+      <p class="margin-horizontal">
+          {{ about.text | nl2br | raw }}
+      </p>
+  </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .image-container,
+        .image-container img {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}

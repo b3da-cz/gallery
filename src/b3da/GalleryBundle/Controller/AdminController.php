@@ -2,9 +2,11 @@
 
 namespace b3da\GalleryBundle\Controller;
 
+use b3da\GalleryBundle\Entity\About;
 use b3da\GalleryBundle\Entity\Gallery;
 use b3da\GalleryBundle\Entity\Image;
 use b3da\GalleryBundle\Entity\Visit;
+use b3da\GalleryBundle\Form\Type\AboutType;
 use b3da\GalleryBundle\Form\Type\GalleryType;
 use b3da\GalleryBundle\Form\Type\ImageType;
 use b3da\GalleryBundle\Form\Type\PasswordFormType;
@@ -168,6 +170,59 @@ class AdminController extends Controller
         return $this->render('b3daGalleryBundle:Admin:image.html.twig', [
             'galleryId' => $galleryId,
             'image' => $image,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/about", name="b3gallery.admin.about")
+     */
+    public function aboutAction(Request $request)
+    {
+        $about = $this->getDoctrine()->getRepository(About::class)->find(1);
+        if (!$about) {
+            $about = new About();
+        }
+        $form = $this->createForm(AboutType::class, $about);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            try {
+                if ($file = $about->imageFile) {
+                    $oldAboutImgs = $em->getRepository(Image::class)->findBy(['isAboutImage' => true]);
+                    if ($oldAboutImgs && count($oldAboutImgs) > 0) {
+                        foreach ($oldAboutImgs as $oldAboutImg) {
+                            $em->remove($oldAboutImg);
+                        }
+                    }
+                    $fileName = 'about.' . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('gallery_directory'),
+                        $fileName
+                    );
+                    $image = new Image();
+                    $image->setDateCreated(new \DateTime());
+                    $image->setFilename($fileName);
+                    $imagePath = $this->getParameter('gallery_directory') . '/' . $image->getFilename();
+                    $imageSizes = getimagesize($imagePath);
+                    list($x, $y) = $imageSizes;
+                    $image->setWidth($x);
+                    $image->setHeight($y);
+                    $em->persist($about);
+                    $about->setImage($image);
+                }
+//                exit(dump($image));
+                if (!$about->getId()) {
+                    $em->persist($about);
+                }
+                $em->flush();
+                return $this->redirectToRoute('b3gallery.admin.about');
+            } catch (\Exception $e) {
+                exit(dump($e));
+            }
+        }
+        return $this->render('b3daGalleryBundle:Admin:about.html.twig', [
+            'about' => $about,
             'form' => $form->createView(),
         ]);
     }
