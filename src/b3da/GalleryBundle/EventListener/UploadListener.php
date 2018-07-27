@@ -95,8 +95,8 @@ class UploadListener
     protected function makeThumbnails(Image $image, $galleryId) {
         if ($this->isImageSpherical($image, $galleryId)) {
             $image->setIsSpherical(true);
-            $this->makeSphericalThumbnail($image, $galleryId);
         }
+        $this->makeSphericalThumbnail($image, $galleryId);
         $sizes = [
             640,
             1280,
@@ -125,6 +125,12 @@ class UploadListener
         if ($x > 6000) {
             $x = round($x * 0.9);
             $y = round($y * 0.9);
+        }
+        $maxSphereWidth = 16000; // 16384px @ fhd
+        if ($x > $maxSphereWidth) {
+            $ratio = $x / $maxSphereWidth;
+            $x = $maxSphereWidth;
+            $y = round($y / $ratio);
         }
         $this->imageResizer->resizeImageExternally(
             $fullImagePath,
