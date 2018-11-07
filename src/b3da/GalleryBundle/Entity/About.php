@@ -45,6 +45,11 @@ class About
     protected $isActive;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $hasSmallImage;
+
+    /**
      * @var UploadedFile
      */
     public $imageFile;
@@ -183,6 +188,30 @@ class About
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set hasSmallImage
+     *
+     * @param boolean $hasSmallImage
+     *
+     * @return About
+     */
+    public function setHasSmallImage($hasSmallImage)
+    {
+        $this->hasSmallImage = $hasSmallImage;
+
+        return $this;
+    }
+
+    /**
+     * Get hasSmallImage
+     *
+     * @return boolean
+     */
+    public function getHasSmallImage()
+    {
+        return $this->hasSmallImage;
     }
 
     /**

@@ -48,6 +48,10 @@ class AboutType extends AbstractType
                 'label' => 'Is "About Page" active?',
                 'required' => false,
             ])
+            ->add('hasSmallImage', CheckboxType::class, [
+                'label' => 'Small Image page type',
+                'required' => false,
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'pure-button pure-button-primary'],
             ])

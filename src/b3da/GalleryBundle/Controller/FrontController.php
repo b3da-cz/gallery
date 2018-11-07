@@ -158,7 +158,12 @@ class FrontController extends Controller
         if (!$about || !$about->getIsActive()) {
             return new JsonResponse(['error' => 'not found or denied'], 418);
         }
-        return $this->render('b3daGalleryBundle:Front:about.html.twig', ['about' => $about]);
+        return $this->render(
+            $about->getHasSmallImage()
+                ? 'b3daGalleryBundle:Front:aboutSmallImg.html.twig'
+                : 'b3daGalleryBundle:Front:about.html.twig', [
+                    'about' => $about,
+            ]);
     }
 
     protected function unlockGallery($gallery) {

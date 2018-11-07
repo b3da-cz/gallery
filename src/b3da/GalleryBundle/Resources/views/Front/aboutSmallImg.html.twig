@@ -1,0 +1,66 @@
+{% extends '@b3daGallery/layout.html.twig' %}
+
+{% block title %}
+    {% if about is defined and about is not null and about.title > '' %}
+        {{ about.title }}
+    {% else %}
+        {{ gallery_name }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+  <div class="flex-row">
+    {% if about is defined and about is not null %}
+    <div>
+      <h2 class="gallery-heading">{{ about.heading }}</h2>
+      <h2 class="gallery-subheading-date">{{ about.subheading }}</h2>
+    </div>
+    <div class="padding-top">
+      <a href="{{ path('b3gallery.front.index') }}" class="link-big">&lt;&lt; list</a>
+    </div>
+    {% endif %}
+  </div>
+  <div class="flex-row">
+      {% if about is defined and about is not null and about.image is not null %}
+      <div class="row-cell-100">
+          <div class="image-right">
+              <div class="image-container">
+                  <img src="{{ gallery_directory ~ '/' ~ about.image.filename }}" alt="{{ about.heading }}">
+              </div>
+          </div>
+          <p class="margin-horizontal">
+              {{ about.text | nl2br | raw }}
+          </p>
+      </div>
+      {% endif %}
+  </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .row-cell-20 {
+            width: 20%;
+        }
+        .row-cell-50 {
+            width: 50%;
+        }
+        .row-cell-80 {
+            width: 80%;
+        }
+        .row-cell-100 {
+            width: 100%;
+        }
+        .image-right {
+            float: right;
+            max-width: 35vw;
+            margin:  0 1rem;
+        }
+        .image-container,
+        .image-container img {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}
